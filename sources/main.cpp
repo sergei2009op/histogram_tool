@@ -2,6 +2,7 @@
 #include <QMap>
 #include <QVector>
 #include <QImage>
+#include <QDir>
 #include <QFile>
 #include <QThread>
 #include <QtConcurrent/QtConcurrent>
@@ -27,13 +28,15 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     const QStringList args = a.arguments();
 
-    if(args.size() == 1)
+    if(args.size() < 2)
         return 1;
 
+    QDir exe_path(QCoreApplication::applicationDirPath());
     QString image_path = args[1];
+
     QImage img;
 
-    if(img.load(image_path))
+    if(img.load(exe_path.absoluteFilePath(image_path)))
     {
         uchar *bits = img.bits();
         quint32 bits_qty = img.width() * img.height() * 4;
